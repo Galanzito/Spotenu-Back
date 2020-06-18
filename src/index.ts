@@ -7,8 +7,14 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
+
 app.use(cors());
+
 app.use(express.json());
+
+app.use("/users", usersRouter);
+
+export default app;
 
 const server = app.listen(process.env.PORT || 3003, () => {
     if(server){
@@ -18,5 +24,3 @@ const server = app.listen(process.env.PORT || 3003, () => {
         console.error(`Failure upon starting server.`)
     }
 });
-
-app.use("/users", usersRouter);
