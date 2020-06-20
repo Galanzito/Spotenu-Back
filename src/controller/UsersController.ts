@@ -5,7 +5,6 @@ import { HashManager } from "../services/hashManager";
 import { TokenManager } from "../services/tokenManager";
 import { IdGenerator } from "../services/idGenerator";
 
-
 export class UsersController {
     private static UsersBusiness = new UsersBusiness(
         new UserDataBase(),
@@ -28,6 +27,19 @@ export class UsersController {
             res.status(200).send(result);
         }catch(err){
             res.status(err.erroCode || 400).send({message: err.message})
+        }finally{
+            await UserDataBase.destroyConnection();
+        }
+    }
+
+    async login(req: Request, res: Response) {
+        const { email, password, nickname } = req.body;
+        try{
+            const result = await UsersController.UsersBusiness.login(password,email, nickname);
+
+            res.status(200).send(result);
+        }catch(err){
+            res.status(err.erroCode || 400).send({messa: err.message})
         }finally{
             await UserDataBase.destroyConnection();
         }
