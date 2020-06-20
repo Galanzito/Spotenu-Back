@@ -3,6 +3,7 @@ import { HashManager } from "../services/hashManager";
 import { TokenManager } from "../services/tokenManager";
 import { IdGenerator } from "../services/idGenerator";
 import { InvalidParameterError } from "../errors/InvalidParameterError";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class UsersBusiness {
     constructor(
@@ -42,5 +43,31 @@ export class UsersBusiness {
             type: type
         })
 
+    }
+
+    public async login(password: string, email?: string, nickname?: string){
+        if(!password){
+            throw new InvalidParameterError("Missing Input")
+        }
+
+        const user = await this.usersDataBase.login(email, nickname)
+        if(!user){
+            throw new NotFoundError("User Not Found")
+        }
+
+        const comparePassword = await this.hashManager.compareHash(password, user.password)
+        if(!comparePassword){
+            throw new Error("Invalid Email or Password")
+        }
+
+        const accessToken = this.tokenManager.generate({
+            id: user.id, 
+            type: user.type
+        })
+
+        return ({
+            accessToken: accessToken,
+            type: user.type
+        })
     }
 };

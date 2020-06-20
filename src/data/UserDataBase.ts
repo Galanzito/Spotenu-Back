@@ -16,4 +16,12 @@ export class UserDataBase extends BaseDataBase {
         `)
     }
 
+    public async login(email?: string, nickname?: string):Promise <any> {
+            const user = await super.getConnection().raw(`
+                SELECT * FROM ${BaseDataBase.USERS_TABLE_NAME} WHERE email = '${email}' OR nickname = '${nickname}'
+            `)
+
+            return user[0][0]
+    }
+
 }
