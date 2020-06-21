@@ -33,11 +33,11 @@ export abstract class BaseDataBase {
         BaseDataBase.KNEX_CONNECTION = null;
     }
 
-    protected convertBooleanToTinyInt(value: boolean): number {
+    public convertBooleanToTinyInt(value: boolean): number {
         return value? 1 : 0;
     }
 
-    protected convertTinyIntToBoolean(value: number): boolean {
+    public convertTinyIntToBoolean(value: number): boolean {
         return value === 1;
     }
 };
