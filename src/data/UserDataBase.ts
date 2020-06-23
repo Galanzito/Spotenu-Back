@@ -22,11 +22,11 @@ export class UserDataBase extends BaseDataBase {
         email: string,
         nickname: string,
         password: string,
-        type: string
+        type: string = 'ADMIN'
     ): Promise <any> {
         return await super.getConnection().raw(`
-            INSERT INTO ${BaseDataBase.USERS_TABLE_NAME}(id, name, email, nickname, password, type)
-            VALUES(('${id}', '${name}', '${email}', '${nickname}', '${password}', '${type}')
+            INSERT INTO ${BaseDataBase.USERS_TABLE_NAME} (id, name, email, nickname, password, type)
+            VALUES('${id}', '${name}', '${email}', '${nickname}', '${password}', '${type}')
         `)
     }
 
