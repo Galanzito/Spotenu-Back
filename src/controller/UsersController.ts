@@ -4,6 +4,7 @@ import { UserDataBase } from "../data/UserDataBase";
 import { HashManager } from "../services/hashManager";
 import { TokenManager } from "../services/tokenManager";
 import { IdGenerator } from "../services/idGenerator";
+import { UnauthorizedError } from '../errors/UnauthorizedError';
 
 export class UsersController {
     private static UsersBusiness = new UsersBusiness(
@@ -26,7 +27,33 @@ export class UsersController {
             )
             res.status(200).send(result);
         }catch(err){
-            res.status(err.erroCode || 400).send({message: err.message})
+            res.status(err.errorCode || 400).send({message: err.message})
+        }finally{
+            await UserDataBase.destroyConnection();
+        }
+    }
+
+    async signUpAdmin(req: Request, res: Response) {
+        const { name, email, nickname, password } = req.body;
+        try{
+            const token = req.headers.authorization as string;
+
+            const tokenData = new TokenManager().verify(token);
+
+            if(tokenData.type !== "ADMIN"){
+                throw new UnauthorizedError("Access Denied")
+            }
+
+            const result = await UsersController.UsersBusiness.signUpAdmin(
+                name,
+                email,
+                nickname,
+                password
+            )
+
+            res.status(200).send(result)
+        }catch(err){
+            res.status(err.errorCode || 400).send({message: err.message})
         }finally{
             await UserDataBase.destroyConnection();
         }
@@ -39,7 +66,49 @@ export class UsersController {
 
             res.status(200).send(result);
         }catch(err){
-            res.status(err.erroCode || 400).send({messa: err.message})
+            res.status(err.errorCode || 400).send({message: err.message})
+        }finally{
+            await UserDataBase.destroyConnection();
+        }
+    }
+
+    async getAllBands(req: Request, res: Response) {
+        try{
+            const token = req.headers.authorization as string;
+
+            const tokenData = new TokenManager().verify(token);
+
+            if(tokenData.type !== "ADMIN"){
+                throw new UnauthorizedError("Access Denied")
+            }
+
+            const result = await UsersController.UsersBusiness.getAllBands()
+
+            res.status(200).send(result)
+        }catch(err){
+            res.status(err.errorCode || 400).send({message: err.message})
+        }finally{
+            await UserDataBase.destroyConnection();
+        }
+    }
+
+    async approveBand(req: Request, res: Response) {
+        try{
+            const token = req.headers.authorization as string;
+
+            const tokenData = new TokenManager().verify(token);
+
+            if(tokenData.type !== "ADMIN"){
+                throw new UnauthorizedError("Access Denied")
+            }
+
+            const nameBand = req.body.name
+            
+            await UsersController.UsersBusiness.approveBand(nameBand)
+
+            res.status(200).send("Banda Aprovada!")
+        }catch(err){
+            res.status(err.errorCode || 400).send({message: err.message})
         }finally{
             await UserDataBase.destroyConnection();
         }
