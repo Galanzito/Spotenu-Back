@@ -102,9 +102,9 @@ export class UsersController {
                 throw new UnauthorizedError("Access Denied")
             }
 
-            const nameBand = req.body.name
+            const idBand = req.body.id
             
-            await UsersController.UsersBusiness.approveBand(nameBand)
+            await UsersController.UsersBusiness.approveBand(idBand)
 
             res.status(200).send("Banda Aprovada!")
         }catch(err){

@@ -41,6 +41,7 @@ export class UserDataBase extends BaseDataBase {
     public async getAllBands(): Promise <any> {
         const result = await super.getConnection().raw(`
             SELECT
+                id,
                 name,
                 email,
                 nickname,
@@ -51,10 +52,10 @@ export class UserDataBase extends BaseDataBase {
         return result[0]
     }
 
-    public async approveBand(name: string): Promise <any> {
+    public async approveBand(id: string): Promise <any> {
         await super.getConnection().raw(`
             UPDATE ${BaseDataBase.USERS_TABLE_NAME}
-            SET isAproved = 1 WHERE name = '${name}'
+            SET isAproved = 1 WHERE id = '${id}'
         `)
     }
 

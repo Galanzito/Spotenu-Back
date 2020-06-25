@@ -108,11 +108,11 @@ export class UsersBusiness {
         return result
     }
 
-    public async approveBand(name: string){
-        if(!name){
-            throw new InvalidParameterError("Invalid Name")
+    public async approveBand(id: string){
+        if(!id){
+            throw new InvalidParameterError("Invalid ID")
         }
 
-        await this.usersDataBase.approveBand(name)
+        await this.usersDataBase.approveBand(id)
     }
 };

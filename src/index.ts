@@ -3,6 +3,7 @@ import { AddressInfo } from 'net';
 import dotenv from 'dotenv';
 import { usersRouter } from './router/UsersRouter';
 import cors from 'cors';
+import { musicalGenresRouter } from './router/MusicalGenresRouter';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", usersRouter);
+app.use("/genres", musicalGenresRouter);
 
 export default app;
 

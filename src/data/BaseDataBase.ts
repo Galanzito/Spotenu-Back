@@ -7,6 +7,7 @@ dotenv.config();
 export abstract class BaseDataBase {
     private static KNEX_CONNECTION : Knex | null = null;
     protected static USERS_TABLE_NAME = 'UsersSpotenu';
+    protected static MUSICAL_GENRES_TABLE_NAME = 'MusicalGenres';
 
     protected getConnection(){
         if(BaseDataBase.KNEX_CONNECTION === null){
