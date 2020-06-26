@@ -13,7 +13,7 @@ export class MusicalGenresController {
 
     async addGenre(req: Request, res: Response) {
         try {
-            const token = req.headers.authorization as string;
+            const token = req.headers.Authorization as string || req.headers.authorization as string;
 
             const tokenData = new TokenManager().verify(token)
 
@@ -33,7 +33,7 @@ export class MusicalGenresController {
 
     async getAllGenres(req: Request, res: Response) {
         try {
-            const token = req.headers.authorization as string;
+            const token = req.headers.Authorization as string || req.headers.authorization as string;
 
             const tokenData = new TokenManager().verify(token)
 

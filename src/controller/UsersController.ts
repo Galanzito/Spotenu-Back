@@ -36,7 +36,7 @@ export class UsersController {
     async signUpAdmin(req: Request, res: Response) {
         const { name, email, nickname, password } = req.body;
         try{
-            const token = req.headers.authorization as string;
+            const token = req.headers.Authorization as string || req.headers.authorization as string;
 
             const tokenData = new TokenManager().verify(token);
 
@@ -74,7 +74,7 @@ export class UsersController {
 
     async getAllBands(req: Request, res: Response) {
         try{
-            const token = req.headers.authorization as string;
+            const token = req.headers.Authorization as string || req.headers.authorization as string;
 
             const tokenData = new TokenManager().verify(token);
 
@@ -94,7 +94,7 @@ export class UsersController {
 
     async approveBand(req: Request, res: Response) {
         try{
-            const token = req.headers.authorization as string;
+            const token = req.headers.Authorization as string || req.headers.authorization as string;
 
             const tokenData = new TokenManager().verify(token);
 
